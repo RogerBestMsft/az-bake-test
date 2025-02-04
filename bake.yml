@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=https://github.com/rogerbestmsft/az-bake/releases/latest/download/bake.schema.json
+version: 1.0
+sandbox:
+  resourceGroup: test60
+  subscription: 572b41e6-5c44-486a-84d2-01d6202774ac
+  virtualNetwork: test60-vnet
+  virtualNetworkResourceGroup: test60
+  defaultSubnet: default
+  builderSubnet: builders
+  keyVault: test60-kv
+  storageAccount: test60storage
+  identityId: /subscriptions/572b41e6-5c44-486a-84d2-01d6202774ac/resourceGroups/test60/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test60-id
+  location: westus3
+gallery:
+  name: test60gallery
+  resourceGroup: test60
+  subscription: 572b41e6-5c44-486a-84d2-01d6202774ac
