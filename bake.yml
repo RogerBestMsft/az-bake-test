@@ -3,13 +3,13 @@ version: 1.0
 sandbox:
   resourceGroup: BakeTestrg
   subscription: 354eeafc-1dda-4165-86c0-d4525e57efef
-  virtualNetwork: BakeTestBravo-vnet
+  virtualNetwork: BakeTestCharlie-vnet
   virtualNetworkResourceGroup: BakeTestrg
   defaultSubnet: default
   builderSubnet: builders
-  keyVault: BakeTestBravo-kv
-  storageAccount: baketestbravostorage
-  identityId: /subscriptions/354eeafc-1dda-4165-86c0-d4525e57efef/resourceGroups/BakeTestrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/BakeTestBravo-id
+  keyVault: BakeTestCharlie-kv
+  storageAccount: baketestcharliestorage
+  identityId: /subscriptions/354eeafc-1dda-4165-86c0-d4525e57efef/resourceGroups/BakeTestrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/BakeTestCharlie-id
   location: centralus
 gallery:
   name: BakeTestGallery
