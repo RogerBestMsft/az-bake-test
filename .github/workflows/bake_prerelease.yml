@@ -1,0 +1,54 @@
+name: Bake Images (Pre-Release)
+
+concurrency: ${{ github.ref }}
+
+on:
+  schedule:
+    - cron: '0 */6 * * *' # check for new pre-releases every 6 hours
+  workflow_dispatch: # allow workflow to be manually triggered
+
+jobs:
+  check:
+    name: Check for new pre-release
+    runs-on: ubuntu-latest
+    outputs:
+      has_prerelease: ${{ steps.check.outputs.has_prerelease }}
+      tag: ${{ steps.check.outputs.tag }}
+    steps:
+      - name: Check latest pre-release
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PRERELEASE=$(gh api repos/RogerBestMsft/az-bake/releases --jq '[.[] | select(.prerelease)][0]')
+          if [ -z "$PRERELEASE" ] || [ "$PRERELEASE" = "null" ]; then
+            echo "has_prerelease=false" >> "$GITHUB_OUTPUT"
+          else
+            TAG=$(echo "$PRERELEASE" | jq -r '.tag_name')
+            echo "has_prerelease=true" >> "$GITHUB_OUTPUT"
+            echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          fi
+
+  bake:
+    name: Bake Images
+    runs-on: ubuntu-latest
+    needs: check
+    if: needs.check.outputs.has_prerelease == 'true'
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Login to Azure
+        run: az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+
+      - name: Install az bake pre-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download ${{ needs.check.outputs.tag }} --dir ${{ runner.temp }} --repo github.com/RogerBestMsft/az-bake --pattern index.json
+          az extension add --yes --source $(jq -r '.extensions.bake[0].downloadUrl' ${{ runner.temp }}/index.json)
+
+      - name: Run az bake
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: az bake repo build --verbose --repo .
