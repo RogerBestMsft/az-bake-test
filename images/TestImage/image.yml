@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=https://github.com/rogerbestmsft/az-bake/releases/latest/download/image.schema.json
+name: TestImage
+description: Windows 11 Enterprise + M365 Apps - Test Image
+publisher: Contoso
+offer: DevBox
+sku: win11-test
+version: 1.0.0
+os: Windows
+replicaLocations:
+  - eastus
+update: true
+base:
+  publisher: microsoftwindowsdesktop
+  offer: windows-ent-cpc
+  sku: win11-22h2-ent-cpc-m365
+  version: latest
