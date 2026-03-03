@@ -51,4 +51,4 @@ jobs:
       - name: Run az bake
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: az bake repo build --verbose --repo . --prerelease
+        run: az bake repo build --verbose --repo . --pre
