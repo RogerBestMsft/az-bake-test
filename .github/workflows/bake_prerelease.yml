@@ -2,9 +2,7 @@ name: Bake Images (Pre-Release)
 
 concurrency: ${{ github.ref }}
 
-on:
-  schedule:
-    - cron: '0 */6 * * *' # check for new pre-releases every 6 hours
+on: 
   workflow_dispatch: # allow workflow to be manually triggered
 
 jobs:
